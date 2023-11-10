@@ -5,6 +5,8 @@ import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { Section } from './App.styled';
 
+const storageKey = 'contacts';
+
 export class App extends Component {
   state = {
     contacts: [
@@ -15,6 +17,22 @@ export class App extends Component {
     ],
     filter: '',
   };
+
+  componentDidMount() {
+    const savedContacts = localStorage.getItem(storageKey);
+    if (savedContacts !== null) {
+      this.setState({ contacts: JSON.parse(savedContacts) });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const prevContact = prevState.contacts;
+    const newContact = this.state.contacts;
+
+    if (prevContact !== newContact) {
+      localStorage.setItem(storageKey, JSON.stringify(newContact));
+    }
+  }
 
   handleAddContactToList = newContact => {
     const isNameRepeat = this.state.contacts.some(
