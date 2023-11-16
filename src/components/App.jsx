@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
@@ -7,82 +7,134 @@ import { Section } from './App.styled';
 
 const storageKey = 'contacts';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-  };
+const getInitialContacts = () => {
+  const savedContacts = localStorage.getItem(storageKey);
+  return savedContacts !== null ? JSON.parse(savedContacts) : [];
+};
 
-  componentDidMount() {
-    const savedContacts = localStorage.getItem(storageKey);
-    if (savedContacts !== null) {
-      this.setState({ contacts: JSON.parse(savedContacts) });
-    }
-  }
+export const App = () => {
+  const [contacts, setContacts] = useState(getInitialContacts);
+  const [filter, setFilter] = useState('');
 
-  componentDidUpdate(prevProps, prevState) {
-    const prevContact = prevState.contacts;
-    const newContact = this.state.contacts;
+  useEffect(() => {
+    window.localStorage.setItem(storageKey, JSON.stringify(contacts));
+  }, [contacts]);
 
-    if (prevContact !== newContact) {
-      localStorage.setItem(storageKey, JSON.stringify(newContact));
-    }
-  }
-
-  handleAddContactToList = newContact => {
-    const isNameRepeat = this.state.contacts.some(
+  const handleAddContactToList = newContact => {
+    const isNameRepeat = contacts.some(
       contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
     );
     if (isNameRepeat) {
       alert(`${newContact.name} is already in contacts.`);
       return;
     }
-
     const contact = { ...newContact, id: nanoid() };
-    this.setState(prev => {
-      return { contacts: [...prev.contacts, contact] };
-    });
+    setContacts(prev => [...prev, contact]);
   };
 
-  searchContactByName = e => {
+  const searchContactByName = e => {
     const { value } = e.currentTarget;
-    this.setState({ filter: value });
+    setFilter(value);
   };
 
-  deleteContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(item => item.id !== contactId),
-    }));
+  const deleteContact = contactId => {
+    setContacts(prev => prev.filter(item => item.id !== contactId));
   };
 
-  getVisibleContacts = () => {
-    return this.state.contacts.filter(item => {
-      return item.name.toLowerCase().includes(this.state.filter.toLowerCase());
-    });
-  };
-
-  render() {
-    const visibleContacts = this.getVisibleContacts();
-
-    return (
-      <Section>
-        <h1>Phonebook</h1>
-        <ContactForm
-          onAdd={this.handleAddContactToList}
-          checkName={this.isNameRepeat}
-        />
-        <h2>Contacts</h2>
-        <Filter searchContact={this.searchContactByName} />
-        <ContactList
-          contacts={visibleContacts}
-          deleteCard={this.deleteContact}
-        />
-      </Section>
+  const getVisibleContacts = () =>
+    contacts.filter(item =>
+      item.name.toLowerCase().includes(filter.toLowerCase())
     );
-  }
-}
+
+  const visibleContacts = getVisibleContacts();
+
+  return (
+    <Section>
+      <h1>Phonebook</h1>
+      <ContactForm onAdd={handleAddContactToList} />
+      <h2>Contacts</h2>
+      <Filter searchContact={searchContactByName} />
+      <ContactList contacts={visibleContacts} deleteCard={deleteContact} />
+    </Section>
+  );
+};
+
+// export class App extends Component {
+//   state = {
+//     contacts: [
+//       { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+//       { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+//       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+//       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+//     ],
+//     filter: '',
+//   };
+
+//   componentDidMount() {
+//     const savedContacts = localStorage.getItem(storageKey);
+//     if (savedContacts !== null) {
+//       this.setState({ contacts: JSON.parse(savedContacts) });
+//     }
+//   }
+
+//   componentDidUpdate(prevProps, prevState) {
+//     const prevContact = prevState.contacts;
+//     const newContact = this.state.contacts;
+
+//     if (prevContact !== newContact) {
+//       localStorage.setItem(storageKey, JSON.stringify(newContact));
+//     }
+//   }
+
+//   handleAddContactToList = newContact => {
+//     const isNameRepeat = this.state.contacts.some(
+//       contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+//     );
+//     if (isNameRepeat) {
+//       alert(`${newContact.name} is already in contacts.`);
+//       return;
+//     }
+
+//     const contact = { ...newContact, id: nanoid() };
+//     this.setState(prev => {
+//       return { contacts: [...prev.contacts, contact] };
+//     });
+//   };
+
+//   searchContactByName = e => {
+//     const { value } = e.currentTarget;
+//     this.setState({ filter: value });
+//   };
+
+//   deleteContact = contactId => {
+//     this.setState(prevState => ({
+//       contacts: prevState.contacts.filter(item => item.id !== contactId),
+//     }));
+//   };
+
+//   getVisibleContacts = () => {
+//     return this.state.contacts.filter(item => {
+//       return item.name.toLowerCase().includes(this.state.filter.toLowerCase());
+//     });
+//   };
+
+//   render() {
+//     const visibleContacts = this.getVisibleContacts();
+
+//     return (
+//       <Section>
+//         <h1>Phonebook</h1>
+//         <ContactForm
+//           onAdd={this.handleAddContactToList}
+//           checkName={this.isNameRepeat}
+//         />
+//         <h2>Contacts</h2>
+//         <Filter searchContact={this.searchContactByName} />
+//         <ContactList
+//           contacts={visibleContacts}
+//           deleteCard={this.deleteContact}
+//         />
+//       </Section>
+//     );
+//   }
+// }
