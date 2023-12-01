@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import { Form, Field, ErrorMessage, Button } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
 
 const ContactSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').required('Required'),
@@ -15,7 +16,7 @@ const ContactSchema = Yup.object().shape({
 });
 
 export const ContactForm = () => {
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
   const handleAddContact = newContact => {
@@ -26,7 +27,7 @@ export const ContactForm = () => {
       alert(`${newContact.name} is already in contacts.`);
       return;
     }
-    dispatch(addNewContact(newContact.name, newContact.number));
+    dispatch(addNewContact(newContact));
   };
 
   return (
