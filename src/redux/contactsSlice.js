@@ -1,44 +1,43 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { addContact, fetchContacts, deleteContact } from './operations';
+
+const handlePending = state => {
+  state.isLoading = true;
+};
+const handleRejected = (state, action) => {
+  state.error = action.payload;
+  state.isLoading = false;
+};
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: { contacts: [] },
-  reducers: {
-    addNewContact: {
-      reducer(state, action) {
-        state.contacts.push(action.payload);
-      },
-      prepare({ name, number }) {
-        return {
-          payload: {
-            id: nanoid(),
-            name,
-            number,
-          },
-        };
-      },
+  initialState: { items: [], isLoading: false, error: null },
+
+  extraReducers: {
+    [fetchContacts.pending]: handlePending,
+    [fetchContacts.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
     },
-    deleteContact(state, action) {
-      state.contacts = state.contacts.filter(
-        item => item.id !== action.payload
-      );
+    [fetchContacts.rejected]: handleRejected,
+
+    [addContact.pending]: handlePending,
+    [addContact.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items.push(action.payload);
     },
+    [addContact.rejected]: handleRejected,
+
+    [deleteContact.pending]: handlePending,
+    [deleteContact.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = state.items.filter(item => item.id !== action.payload.id);
+    },
+    [deleteContact.rejected]: handleRejected,
   },
 });
 
-const persistConfig = {
-  key: 'contacts',
-  storage,
-};
-
 export const contactsReducer = contactsSlice.reducer;
-
-export const { addNewContact, deleteContact } = contactsSlice.actions;
-
-export const persistedContactsReducer = persistReducer(
-  persistConfig,
-  contactsReducer
-);
