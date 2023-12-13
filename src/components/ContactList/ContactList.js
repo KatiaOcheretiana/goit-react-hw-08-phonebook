@@ -1,12 +1,12 @@
 import { Loader } from 'components/Loader';
 import { List, Item, Button } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from 'redux/operations';
+import { deleteContact } from 'redux/contacts/operations';
 import {
   selectError,
   selectIsLoading,
   selectVisibleContacts,
-} from 'redux/selectors';
+} from 'redux/contacts/selectors';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
@@ -22,10 +22,10 @@ export const ContactList = () => {
       {error && <b>Something went wrong... Try reloading the page </b>}
       {isLoading && !error && <Loader />}
       <List>
-        {contactsByFilter.map(({ id, name, phone }) => (
+        {contactsByFilter.map(({ id, name, number }) => (
           <Item key={id}>
             <p>
-              {name}: {phone}
+              {name}: {number}
             </p>
             <Button onClick={() => handleDelete(id)}>Delete</Button>
           </Item>

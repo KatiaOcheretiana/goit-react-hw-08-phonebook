@@ -1,25 +1,32 @@
-import { ContactForm } from './ContactForm/ContactForm';
-import { ContactList } from './ContactList/ContactList';
-import { Filter } from './Filter/Filter';
-import { Section } from './App.styled';
 import { useDispatch } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+import { Layout } from './Layout';
+import { Contacts } from 'pages/Contacts';
+import { Register } from 'pages/Register';
+import { Home } from 'pages/Home';
+import { Login } from 'pages/Login';
+import { refreshUser } from 'redux/auth/operations';
 import { useEffect } from 'react';
-import { fetchContacts } from 'redux/operations';
+import { useAuth } from 'redux/auth/selectors';
 
 export const App = () => {
   const dispatch = useDispatch();
+  const { isRefreshing } = useAuth();
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(refreshUser());
   }, [dispatch]);
 
-  return (
-    <Section>
-      <h1>Phonebook</h1>
-      <ContactForm />
-      <h2>Contacts</h2>
-      <Filter />
-      <ContactList />
-    </Section>
+  return isRefreshing ? (
+    <b>Refreshing user...</b>
+  ) : (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/contacts" element={<Contacts />} />
+      </Route>
+    </Routes>
   );
 };
