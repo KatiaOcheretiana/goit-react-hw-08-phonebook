@@ -1,9 +1,11 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Form, Field, ErrorMessage, Button } from './ContactForm.styled';
+import { Form, Field, ErrorMessage } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from 'redux/contacts/selectors';
 import { addContact } from 'redux/contacts/operations';
+import { Button } from '@mui/material';
+import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 
 const ContactSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').required('Required'),
@@ -55,7 +57,16 @@ export const ContactForm = () => {
           <Field type="tel" name="phone" />
           <ErrorMessage name="phone" component="span" />
         </label>
-        <Button type="submit">Add contact</Button>
+        {/* <Button type="submit">Add contact</Button> */}
+        <Button
+          startIcon={<GroupAddOutlinedIcon />}
+          size="medium"
+          variant="contained"
+          color="secondary"
+          type="submit"
+        >
+          Add contact
+        </Button>
       </Form>
     </Formik>
   );

@@ -1,18 +1,23 @@
+import { Stack, Typography } from '@mui/material';
 import simpleImage from '../image/contacts-img.png';
 
-export const Home = () => {
+const Home = () => {
   return (
-    <div>
-      <h2>Welcome to our contact management platform!</h2>
+    <Stack direction="row" spacing={4}>
+      <Typography variant="h1">
+        Welcome to our contact management platform!
+      </Typography>
       <div>
-        <p>
+        <Typography variant="p">
           We're delighted to have you here. This is your space to effortlessly
           save and organize your contacts. To get started, simply log in and
           begin streamlining your connections. Let's make managing your contacts
           a breeze
-        </p>
+        </Typography>
         <img src={simpleImage} alt="Contacts" />
       </div>
-    </div>
+    </Stack>
   );
 };
+
+export default Home;

@@ -1,18 +1,15 @@
 import { Suspense } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { Navigation } from './Navigation/Navigation';
+import { Container } from '@mui/material';
 
 export const Layout = () => {
   return (
-    <div>
-      <nav>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/contacts">Contacts</NavLink>
-        <NavLink to="/login">Login</NavLink>
-        <NavLink to="/register">Register</NavLink>
-      </nav>
-      <Suspense fallback={null}>
+    <Container>
+      <Navigation />
+      <Suspense fallback={<h2>Loading..</h2>}>
         <Outlet />
       </Suspense>
-    </div>
+    </Container>
   );
 };

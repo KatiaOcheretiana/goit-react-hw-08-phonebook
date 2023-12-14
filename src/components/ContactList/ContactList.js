@@ -1,5 +1,5 @@
 import { Loader } from 'components/Loader';
-import { List, Item, Button } from './ContactList.styled';
+import { List, Item } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from 'redux/contacts/operations';
 import {
@@ -7,6 +7,8 @@ import {
   selectIsLoading,
   selectVisibleContacts,
 } from 'redux/contacts/selectors';
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
@@ -27,7 +29,14 @@ export const ContactList = () => {
             <p>
               {name}: {number}
             </p>
-            <Button onClick={() => handleDelete(id)}>Delete</Button>
+            <IconButton
+              aria-label="delete"
+              color="secondary"
+              size="small"
+              onClick={() => handleDelete(id)}
+            >
+              <DeleteIcon />
+            </IconButton>
           </Item>
         ))}
       </List>

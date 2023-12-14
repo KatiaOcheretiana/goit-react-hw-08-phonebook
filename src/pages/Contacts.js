@@ -5,8 +5,9 @@ import { Filter } from 'components/Filter/Filter';
 import { ContactList } from 'components/ContactList/ContactList';
 import { Section } from 'components/App.styled';
 import { fetchContacts } from 'redux/contacts/operations';
+import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 
-export const Contacts = () => {
+const Contacts = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,7 +16,10 @@ export const Contacts = () => {
 
   return (
     <Section>
-      <h1>Phonebook</h1>
+      <h1>
+        <LibraryBooksOutlinedIcon fontSize="large" color="secondary" />{' '}
+        Phonebook
+      </h1>
       <ContactForm />
       <div>
         <h2>Contacts</h2>
@@ -25,3 +29,5 @@ export const Contacts = () => {
     </Section>
   );
 };
+
+export default Contacts;
