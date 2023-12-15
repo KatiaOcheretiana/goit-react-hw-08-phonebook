@@ -3,9 +3,8 @@ import { useEffect } from 'react';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { Filter } from 'components/Filter/Filter';
 import { ContactList } from 'components/ContactList/ContactList';
-import { Section } from 'components/App.styled';
 import { fetchContacts } from 'redux/contacts/operations';
-import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
+import { Box, Container } from '@mui/material';
 
 const Contacts = () => {
   const dispatch = useDispatch();
@@ -15,18 +14,17 @@ const Contacts = () => {
   }, [dispatch]);
 
   return (
-    <Section>
-      <h1>
-        <LibraryBooksOutlinedIcon fontSize="large" color="secondary" />{' '}
-        Phonebook
-      </h1>
-      <ContactForm />
-      <div>
+    <Container sx={{ width: '400px', margin: '30px auto' }}>
+      <Box>
+        <h2>Use form to add new contacts</h2>
+        <ContactForm />
+      </Box>
+      <Box>
         <h2>Contacts</h2>
         <Filter />
         <ContactList />
-      </div>
-    </Section>
+      </Box>
+    </Container>
   );
 };
 

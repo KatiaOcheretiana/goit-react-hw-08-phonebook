@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Form, Field, ErrorMessage } from './ContactForm.styled';
+import { Form, Field, ErrorMessage, BoxField } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from 'redux/contacts/selectors';
 import { addContact } from 'redux/contacts/operations';
@@ -38,36 +38,36 @@ export const ContactForm = () => {
   };
 
   return (
-    <Formik
-      initialValues={{ name: '', phone: '' }}
-      validationSchema={ContactSchema}
-      onSubmit={(values, actions) => {
-        handleAddContact(values);
-        actions.resetForm();
-      }}
-    >
-      <Form>
-        <label>
-          Name
-          <Field type="text" name="name" />
-          <ErrorMessage name="name" component="span" />
-        </label>
-        <label>
-          Number
-          <Field type="tel" name="phone" />
-          <ErrorMessage name="phone" component="span" />
-        </label>
-        {/* <Button type="submit">Add contact</Button> */}
-        <Button
-          startIcon={<GroupAddOutlinedIcon />}
-          size="medium"
-          variant="contained"
-          color="secondary"
-          type="submit"
-        >
-          Add contact
-        </Button>
-      </Form>
-    </Formik>
+    <BoxField>
+      <Formik
+        initialValues={{ name: '', phone: '' }}
+        validationSchema={ContactSchema}
+        onSubmit={(values, actions) => {
+          handleAddContact(values);
+          actions.resetForm();
+        }}
+      >
+        <Form>
+          <label>
+            Name
+            <Field type="text" name="name" />
+            <ErrorMessage name="name" component="span" />
+          </label>
+          <label>
+            Number
+            <Field type="tel" name="phone" />
+            <ErrorMessage name="phone" component="span" />
+          </label>
+          <Button
+            startIcon={<GroupAddOutlinedIcon />}
+            size="medium"
+            variant="contained"
+            type="submit"
+          >
+            Add contact
+          </Button>
+        </Form>
+      </Formik>
+    </BoxField>
   );
 };

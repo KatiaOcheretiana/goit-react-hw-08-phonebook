@@ -5,38 +5,37 @@ import {
   Field as FormikField,
   ErrorMessage as FormikError,
 } from 'formik';
+import { Box } from '@mui/material';
+
+export const BoxField = styled(Box)({
+  width: '100%',
+  margin: '30px 0',
+  borderRadius: '8px',
+  border: '2px solid rgba(70, 81, 124, 0.5)',
+  backgroundColor: 'rgba(16, 20, 38, 1)',
+});
 
 export const Form = styled(FormikForm)`
-  margin: 24px 0;
   padding: 20px;
   display: flex;
-  width: 290px;
   gap: 20px;
   flex-direction: column;
-  border: 2px solid;
-  border-color: green;
+  color: #d7dff4;
+  font-size: 15px;
+  line-height: 18px;
+  text-transform: capitalize;
 `;
 
 export const Field = styled(FormikField)`
   margin-top: 10px;
   width: 100%;
   padding: 4px;
+  &.focus {
+    border-color: blue;
+  }
 `;
 
 export const ErrorMessage = styled(FormikError)`
   color: red;
   font-size: 12px;
-`;
-
-export const Button = styled.button`
-  width: 100px;
-  padding: 4px;
-  border: 1px solid;
-  border-radius: 4px;
-  font-size: 12px;
-
-  &:hover,
-  &:focus {
-    background-color: greenyellow;
-  }
 `;

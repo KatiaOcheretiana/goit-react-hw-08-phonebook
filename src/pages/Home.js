@@ -1,22 +1,23 @@
-import { Stack, Typography } from '@mui/material';
-import simpleImage from '../image/contacts-img.png';
+import { Typography } from '@mui/material';
+import simpleImage from '../image/people-talking.avif';
+import { BoxField, HomeContainer, Image } from './HomeStyled';
 
 const Home = () => {
   return (
-    <Stack direction="row" spacing={4}>
-      <Typography variant="h1">
+    <HomeContainer>
+      <Typography variant="h3" sx={{ marginBottom: '20px' }}>
         Welcome to our contact management platform!
       </Typography>
-      <div>
+      <BoxField>
         <Typography variant="p">
           We're delighted to have you here. This is your space to effortlessly
           save and organize your contacts. To get started, simply log in and
           begin streamlining your connections. Let's make managing your contacts
           a breeze
         </Typography>
-        <img src={simpleImage} alt="Contacts" />
-      </div>
-    </Stack>
+        <Image src={simpleImage} alt="Contacts" />
+      </BoxField>
+    </HomeContainer>
   );
 };
 
