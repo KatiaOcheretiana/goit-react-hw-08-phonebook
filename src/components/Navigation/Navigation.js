@@ -1,7 +1,7 @@
 import { AppBar, Typography } from '@mui/material';
 import { UserMenu } from 'components/UserMenu/UserMenu';
 import { useAuth } from 'redux/auth/selectors';
-import { BoxNav, StyledLink, StyledToolBar } from './NavigationStyled';
+import { BoxNav, StyledLink, StyledToolBar } from './Navigation.styled';
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 
 export const Navigation = () => {

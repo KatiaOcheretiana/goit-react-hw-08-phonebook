@@ -6,13 +6,14 @@ import { selectContacts } from 'redux/contacts/selectors';
 import { addContact } from 'redux/contacts/operations';
 import { Button } from '@mui/material';
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
+import toast from 'react-hot-toast';
 
 const ContactSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').required('Required'),
   phone: Yup.string()
     .matches(
-      /^[0-9]{3}-[0-9]{2}-[0-9]{2}$/,
-      'Invalid number format (e.g., xxx-xx-xx)'
+      /^[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}$/,
+      'Invalid number format (e.g., 096-000-00-00)'
     )
     .required('Number is required'),
 });
@@ -26,9 +27,12 @@ export const ContactForm = () => {
       item => item.name.toLowerCase() === newContact.name.toLowerCase()
     );
     if (isNameRepeat) {
-      alert(`${newContact.name} is already in contacts.`);
+      toast.error(`${newContact.name} is already in contacts.`);
       return;
     }
+    toast('Successfully added the contact!', {
+      icon: '👏',
+    });
     dispatch(
       addContact({
         name: newContact.name,
